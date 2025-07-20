@@ -14,4 +14,15 @@ use App\Http\Controllers\TelegramController;
 |
 */
 
+Route::get('/', function () {
+    return response()->json([
+        'app' => config('app.name'),
+        'env' => config('app.env'),
+        'debug' => config('app.debug'),
+        'php_version' => phpversion(),
+        'laravel_version' => app()->version(),
+        'message' => 'Welcome to Laravel app!'
+    ]);
+});
+
 Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);

@@ -16,9 +16,11 @@ class TelegramController extends Controller
 
         if ($callbackQuery = $update->getCallbackQuery()) {
             $telegramUser = $callbackQuery->getFrom();
-            $user = User::getUserByTelegram($telegramUser);
+            $chatId = $callbackQuery->getMessage()->getChat()->getId();
 
-            $this->handleCallbackQuery($callbackQuery, $user);
+            $user = User::getUserByTelegram($telegramUser, $chatId);
+
+            $this->handleCallbackQuery($callbackQuery, $user, $chatId);
 
             return response('ok', 200);
         }
@@ -30,9 +32,8 @@ class TelegramController extends Controller
         return response('ok', 200);
     }
 
-    private function handleCallbackQuery($callbackQuery, User $user)
+    private function handleCallbackQuery($callbackQuery, User $user, $chatId)
     {
-        $chatId = $callbackQuery->getMessage()->getChat()->getId();
         $callbackData = $callbackQuery->getData();
 
         foreach (config('telegram_callbacks') as $prefix => [$controllerClass, $method]) {
@@ -53,7 +54,9 @@ class TelegramController extends Controller
         $chatId = $message->getChat()->getId();
         $text = trim($message->getText());
 
-        $user = User::getUserByTelegram($telegramUser);
+        Log::info($chatId);
+
+        $user = User::getUserByTelegram($telegramUser, $chatId);
 
         if (str_starts_with($text, '/')) {
             $user->current_action = null;
@@ -80,6 +83,13 @@ class TelegramController extends Controller
         }
 
         if ($user->current_action === 'creating_note') {
+            $noteController = app(NoteController::class);
+            $noteController->handleUserMessage($user, $chatId, $message);
+
+            return response('ok', 200);
+        }
+
+        if ($user->current_action === 'editing_note') {
             $noteController = app(NoteController::class);
             $noteController->handleUserMessage($user, $chatId, $message);
 

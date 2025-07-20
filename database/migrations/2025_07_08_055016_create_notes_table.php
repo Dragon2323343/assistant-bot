@@ -16,7 +16,6 @@ class CreateNotesTable extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title')->nullable();
             $table->text('content')->nullable();
             $table->foreignId('category_id')
                 ->nullable()
@@ -25,6 +24,7 @@ class CreateNotesTable extends Migration
             $table->dateTime('remind_datetime')->nullable();
             $table->string('file_path')->nullable();
             $table->string('voice_path')->nullable();
+            $table->boolean('complete')->default(false);
             $table->timestamps();
         });
     }

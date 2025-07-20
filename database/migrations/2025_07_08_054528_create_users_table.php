@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('telegram_user_id')->unique();
+            $table->bigInteger('chat_id')->nullable();
             $table->string('current_action')->nullable();
             $table->string('current_action_step')->nullable();
             $table->json('temp_data')->nullable();

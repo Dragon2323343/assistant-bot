@@ -1,33 +1,29 @@
-FROM php:7.2-fpm
+FROM php:8.0-fpm
 
-# 👉 Фиксим устаревшие репозитории
-RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
-    sed -i '/security.debian.org/d' /etc/apt/sources.list && \
-    apt-get update && apt-get install -y \
-        build-essential \
-        libpng-dev \
-        libjpeg-dev \
+RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
-        locales \
-        zip \
-        jpegoptim optipng pngquant gifsicle \
-        vim unzip git curl libzip-dev
+        libjpeg62-turbo-dev \
+        libpng-dev \
+        libonig-dev \
+        libzip-dev \
+        libmemcached-dev \
+        libmcrypt-dev \
+        libc-dev \
+        libssl-dev \
+        libz-dev \
+    && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# 👉 PHP расширения
-RUN docker-php-ext-configure zip --with-libzip \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
-
-# 👉 Composer из официального контейнера Composer
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
-
-# 👉 Рабочая директория
 WORKDIR /var/www
 
-# 👉 Копируем всё
 COPY . /var/www
 
-# 👉 Ставим зависимости Laravel
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader || true
 
-# 👉 Даём права www-data
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+ && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+USER www-data
+
+EXPOSE 9000
+CMD ["php-fpm"]

@@ -12,6 +12,7 @@ class User extends Model
         'current_action',
         'current_action_step',
         'temp_data',
+        'chat_id'
     ];
 
     public static function createUser($telegramUser)
@@ -28,10 +29,11 @@ class User extends Model
         ]);
     }
 
-    public static function getUserByTelegram($telegramUser)
+    public static function getUserByTelegram($telegramUser, $chatId = null)
     {
         return self::firstOrCreate(
-            ['telegram_user_id' => $telegramUser->getId()]
+            ['telegram_user_id' => $telegramUser->getId()],
+            ['chat_id' => $chatId]
         );
     }
 
