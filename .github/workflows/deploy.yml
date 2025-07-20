@@ -19,4 +19,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run deploy script on server
-        run: ssh -o StrictHostKeyChecking=no www-data@95.163.231.194 'bash /var/www/deploy.sh'
+        run: ssh -o StrictHostKeyChecking=no deploy@95.163.231.194 'bash /var/www/deploy.sh'
