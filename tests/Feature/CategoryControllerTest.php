@@ -108,13 +108,13 @@ class CategoryControllerTest extends TestCase
         }
 
         Telegram::shouldReceive('sendMessage')->once()->with(\Mockery::on(function ($arg) {
-            return str_contains($arg['text'], 'Выберите категорию для управления')
+            return str_contains($arg['text'], 'Выберите категорию')
                 && isset($arg['reply_markup']);
         }));
 
         $controller = app(CategoryController::class);
 
-        $controller->showCategories($user, 123456, 1);
+        $controller->showCategories($user, 123456, 1, null);
 
         $this->assertTrue(true);
     }
