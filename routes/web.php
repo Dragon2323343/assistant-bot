@@ -22,13 +22,13 @@ Route::get('/', function () {
         'debug' => config('app.debug'),
         'php_version' => phpversion(),
         'laravel_version' => app()->version(),
-        'message' => 'Welcome to Laravel app!'
+        'message' => 'Welcome to Laravel!'
     ]);
 });
 
 Route::post('/deploy/webhook', function(Request $request) {
     Log::info('Deploy webhook triggered.');
-    
+
     $output = null;
     $resultCode = null;
     exec('/var/www/deploy.sh 2>&1', $output, $resultCode);
