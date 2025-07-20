@@ -22,18 +22,12 @@ Route::get('/', function () {
         'debug' => config('app.debug'),
         'php_version' => phpversion(),
         'laravel_version' => app()->version(),
-        'message' => 'Welcome to Laravel test route!'
+        'message' => 'Welcome to Laravel!'
     ]);
 });
 
 Route::post('/deploy/webhook', function(Request $request) {
-    Log::info('Deploy webhook triggered.');
-
-    $output = null;
-    $resultCode = null;
-    exec('/var/www/deploy.sh 2>&1', $output, $resultCode);
-
-    Log::info("Deploy script output:", $output);
+    exec('/var/www/deploy.sh 2>&1');
 
     return response()->json(['status' => $resultCode === 0 ? 'success' : 'error', 'output' => $output]);
 });
