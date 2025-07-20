@@ -22,12 +22,14 @@ Route::get('/', function () {
         'debug' => config('app.debug'),
         'php_version' => phpversion(),
         'laravel_version' => app()->version(),
-        'message' => 'Welcome to Laravel!'
+        'message' => 'Welcome to Laravel test route!'
     ]);
 });
 
 Route::post('/deploy/webhook', function(Request $request) {
-    exec('/var/www/deploy.sh 2>&1');
+    $output = null;
+    $resultCode = null;
+    exec('/var/www/deploy.sh 2>&1', $output, $resultCode);
 
     return response()->json(['status' => $resultCode === 0 ? 'success' : 'error', 'output' => $output]);
 });
