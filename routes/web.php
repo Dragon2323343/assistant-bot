@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\TelegramController;
 
 /*
@@ -23,6 +24,18 @@ Route::get('/', function () {
         'laravel_version' => app()->version(),
         'message' => 'Welcome to Laravel app!'
     ]);
+});
+
+Route::post('/deploy/webhook', function(Request $request) {
+    Log::info('Deploy webhook triggered.');
+    
+    $output = null;
+    $resultCode = null;
+    exec('/var/www/deploy.sh 2>&1', $output, $resultCode);
+
+    Log::info("Deploy script output:", $output);
+
+    return response()->json(['status' => $resultCode === 0 ? 'success' : 'error', 'output' => $output]);
 });
 
 Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
