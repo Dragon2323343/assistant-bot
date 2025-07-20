@@ -26,12 +26,4 @@ Route::get('/', function () {
     ]);
 });
 
-Route::post('/deploy/webhook', function(Request $request) {
-    $output = null;
-    $resultCode = null;
-    exec('/var/www/deploy.sh 2>&1', $output, $resultCode);
-
-    return response()->json(['status' => $resultCode === 0 ? 'success' : 'error', 'output' => $output]);
-});
-
 Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
