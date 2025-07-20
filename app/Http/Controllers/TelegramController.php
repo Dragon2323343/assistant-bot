@@ -7,11 +7,14 @@ use App\Services\Telegram\TelegramHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use App\Services\Telegram\TelegramCommandRegistrar;
 
 class TelegramController extends Controller
 {
     public function webhook(Request $request)
     {
+        TelegramCommandRegistrar::registerCommands();
+
         $update = Telegram::getWebhookUpdate();
 
         if ($callbackQuery = $update->getCallbackQuery()) {
