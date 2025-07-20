@@ -22,7 +22,7 @@ Route::get('/', function () {
         'debug' => config('app.debug'),
         'php_version' => phpversion(),
         'laravel_version' => app()->version(),
-        'message' => 'Welcome to Laravel!'
+        'message' => 'Welcome to Laravel !'
     ]);
 });
 
