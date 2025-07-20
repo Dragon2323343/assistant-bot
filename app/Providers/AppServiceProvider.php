@@ -34,21 +34,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         if (!app()->environment('testing')) {
-            Telegram::addCommand(StartCommand::class);
-            Telegram::addCommand(NewNoteCommand::class);
-            Telegram::addCommand(NewCategoryCommand::class);
-            Telegram::addCommand(ListCategoriesCommand::class);
-            Telegram::addCommand(ListNotesCommand::class);
-
-            Telegram::setMyCommands([
-                'commands' => [
-                    ['command' => 'start', 'description' => 'Начальное приветствие'],
-                    ['command' => 'new_category', 'description' => 'Создать новую категорию'],
-                    ['command' => 'new_note', 'description' => 'Создать новую заметку'],
-                    ['command' => 'list_notes', 'description' => 'Показать список заметок'],
-                    ['command' => 'list_categories', 'description' => 'Показать список категорий']
-                ],
-            ]);
+//            Telegram::addCommand(StartCommand::class);
+//            Telegram::addCommand(NewNoteCommand::class);
+//            Telegram::addCommand(NewCategoryCommand::class);
+//            Telegram::addCommand(ListCategoriesCommand::class);
+//            Telegram::addCommand(ListNotesCommand::class);
+//
+//            Telegram::setMyCommands([
+//                'commands' => [
+//                    ['command' => 'start', 'description' => 'Начальное приветствие'],
+//                    ['command' => 'new_category', 'description' => 'Создать новую категорию'],
+//                    ['command' => 'new_note', 'description' => 'Создать новую заметку'],
+//                    ['command' => 'list_notes', 'description' => 'Показать список заметок'],
+//                    ['command' => 'list_categories', 'description' => 'Показать список категорий']
+//                ],
+//            ]);
         }
     }
 }
