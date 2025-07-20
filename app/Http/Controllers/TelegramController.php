@@ -57,8 +57,6 @@ class TelegramController extends Controller
         $chatId = $message->getChat()->getId();
         $text = trim($message->getText());
 
-        Log::info($chatId);
-
         $user = User::getUserByTelegram($telegramUser, $chatId);
 
         if (str_starts_with($text, '/')) {
