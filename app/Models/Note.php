@@ -8,13 +8,11 @@ class Note extends Model
 {
     protected $fillable = [
         'user_id',
-        'title',
         'content',
         'category_id',
-        'remind_at',
-        'repeat_type',
+        'remind_datetime',
         'file_path',
-        'voice_path',
+        'complete',
     ];
 
     public function category()

@@ -23,7 +23,6 @@ class CreateNotesTable extends Migration
                 ->onDelete('cascade');
             $table->dateTime('remind_datetime')->nullable();
             $table->string('file_path')->nullable();
-            $table->string('voice_path')->nullable();
             $table->boolean('complete')->default(false);
             $table->timestamps();
         });
