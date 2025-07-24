@@ -11,31 +11,7 @@ use App\Services\Telegram\TelegramCommandRegistrar;
 
 class TelegramController extends Controller
 {
-    public function webhook(Request $request)
-    {
-        TelegramCommandRegistrar::registerCommands();
-
-        $update = Telegram::getWebhookUpdate();
-
-        if ($callbackQuery = $update->getCallbackQuery()) {
-            $telegramUser = $callbackQuery->getFrom();
-            $chatId = $callbackQuery->getMessage()->getChat()->getId();
-
-            $user = User::getUserByTelegram($telegramUser, $chatId);
-
-            $this->handleCallbackQuery($callbackQuery, $user, $chatId);
-
-            return response('ok', 200);
-        }
-
-        if ($message = $update->getMessage()) {
-            return $this->handleMessage($message);
-        }
-
-        return response('ok', 200);
-    }
-
-    private function handleCallbackQuery($callbackQuery, User $user, $chatId)
+    public function handleCallbackQuery($callbackQuery, User $user, $chatId)
     {
         $callbackData = $callbackQuery->getData();
 
@@ -51,7 +27,7 @@ class TelegramController extends Controller
 
         return false;
     }
-    private function handleMessage($message)
+    public function handleMessage($message, $update)
     {
         $telegramUser = $message->getFrom();
         $chatId = $message->getChat()->getId();
@@ -65,7 +41,8 @@ class TelegramController extends Controller
             $user->temp_data = null;
             $user->save();
 
-            Telegram::commandsHandler(true);
+            $command = ltrim($text, '/');
+            Telegram::triggerCommand($command, $update);
             return response('ok', 200);
         }
 
