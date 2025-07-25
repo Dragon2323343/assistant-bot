@@ -87,7 +87,7 @@ class NoteController extends Controller
             if ($user->current_action === 'editing_note' && $user->current_action_step === 'waiting_note_file') {
                 $this->updateNoteFile($user, $chatId, $message);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в handleUserMessage: ' . $e->getMessage(), [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -166,7 +166,7 @@ class NoteController extends Controller
                     ]);
                     break;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в handleNoteCallback: ' . $e->getMessage(), [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -207,7 +207,7 @@ class NoteController extends Controller
                 'text' => "Категория выбрана: *{$category->name}*\nТеперь введите текст заметки:",
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в handleSelectCategory: ' . $e->getMessage(), [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -252,7 +252,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => 'Заметка успешно сохранена!',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в handleSaveNoteDraft: ' . $e->getMessage(), [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -276,7 +276,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => 'Пожалуйста, введите дату и время для заметки в формате YYYY-MM-DD HH:MM (например, 2025-07-15 14:30):',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в handleSetDatePrompt: ' . $e->getMessage(), [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -300,7 +300,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => 'Пожалуйста, пришлите файл (документ, фото или голосовое сообщение), который хотите прикрепить к заметке.',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в handleAttachFilePrompt: ' . $e->getMessage(), [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -336,7 +336,7 @@ class NoteController extends Controller
             ]);
 
             $this->showNoteActionsMenu($chatId);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в handleFile: ' . $e->getMessage(), [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -370,7 +370,7 @@ class NoteController extends Controller
                 'text' => 'Выберите действие для заметки:',
                 'reply_markup' => json_encode(['inline_keyboard' => $inlineKeyboard]),
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в showNoteActionsMenu: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -425,7 +425,7 @@ class NoteController extends Controller
                 'parse_mode' => 'Markdown',
                 'reply_markup' => json_encode(['inline_keyboard' => $inlineKeyboard]),
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в showNotesByCategory: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -502,7 +502,7 @@ class NoteController extends Controller
                     'caption' => '📎 Прикреплённый файл',
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в showNoteDetail: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -539,7 +539,7 @@ class NoteController extends Controller
                 'message_id' => $messageId,
                 'text' => '🗑 Заметка успешно удалена.',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в showNoteDetail: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -569,7 +569,7 @@ class NoteController extends Controller
             $note->save();
 
             $this->showNoteDetail($user, $chatId, $noteId, $messageId);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в toggleCompleteNote: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -616,7 +616,7 @@ class NoteController extends Controller
                     'inline_keyboard' => $inlineKeyboard
                 ]),
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в startNoteEditing: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -644,7 +644,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => '✏️ Отправьте новый текст для заметки.',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в askNewNoteText: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -672,7 +672,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => '📎 Отправьте новый файл для заметки.',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в askNewNoteFile: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -701,7 +701,7 @@ class NoteController extends Controller
                 'text' => '⏰ Отправьте новую дату и время в формате `YYYY-MM-DD HH:MM`, например: `2025-07-20 14:30`',
                 'parse_mode' => 'Markdown',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в askNewNoteDate: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -741,7 +741,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => "✏️ Текст заметки обновлён.",
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в updateNoteText: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -787,7 +787,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => "📅 Дата и время напоминания обновлены.",
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в updateNoteDate: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -861,7 +861,7 @@ class NoteController extends Controller
                 'chat_id' => $chatId,
                 'text' => '📎 Файл успешно прикреплён к заметке.',
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в updateNoteFile: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
@@ -898,7 +898,7 @@ class NoteController extends Controller
             }
 
             return $date;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Ошибка в validateDate: ' . $e->getMessage(), [
                 'chat_id' => $chatId,
                 'trace' => $e->getTraceAsString(),
